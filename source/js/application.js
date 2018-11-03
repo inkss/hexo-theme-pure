@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
   // bootstrap tooltip
   $('[data-toggle="tooltip"]').tooltip();
 
@@ -13,12 +13,21 @@ $(function() {
     });
   }
 
+  $(window).resize(function () {
+    //alert("窗体大小改变了！");
+    if ($(window).width() > 992) {
+      location.reload();
+    }
+  });
+
   //手机分辨率下不自动打开目录
-  if($(window).width() > 768 ) {
+  if ($(window).width() > 768) {
     $('a.toggle-btn').trigger('click');
   }
 
-  $('#collapseToc').on('shown.bs.collapse', function() {
+  $('a.fix-collapse').trigger('click');
+
+  $('#collapseToc').on('shown.bs.collapse', function () {
     // do something…
     // slimscroll
     if (typeof $.fn.slimScroll != 'undefined') {
@@ -27,7 +36,7 @@ $(function() {
   });
 
   // geopattern 背景生成
-  $(".geopattern").each(function() {
+  $(".geopattern").each(function () {
     $(this).geopattern($(this).data('pattern-id'));
   });
 
@@ -53,7 +62,7 @@ $(function() {
     zindex: 42,
     edgeOffset: 0
   });
-  
+
   $('[data-stick-top]').keepInView({
     fixed: true,
     parentClass: "has-sticky",
@@ -79,4 +88,32 @@ $(function() {
     }
     $menuList[activeIndex] && $($menuList[activeIndex]).addClass('active');
   }
+
+  //gotop
+  var top = $("#go-top");
+  var a = document.getElementById("LeftHeader");
+  var b = document.getElementById("LeftFooter");
+  var c = document.getElementById("RightSidebar");
+  $(window).scroll(function () {
+    var topnum = $(document).scrollTop();
+    if ($(window).width() > 992) {
+      if (topnum > 300) {
+        a.style.visibility = 'hidden';
+        b.style.visibility = 'hidden';
+        c.style.visibility = 'hidden';
+      } else {
+        a.style.visibility = 'visible'
+        b.style.visibility = 'visible'
+        c.style.visibility = 'visible'
+      }
+    }
+    (topnum > 300) ? top.show(300): top.hide(200);
+    top.click(function (e) {
+      $('body,html').animate({
+        scrollTop: 0
+      });
+      // 改用此句子而非 return false 的原因：https://my.oschina.net/taisha/blog/79138
+      e.stopImmediatePropagation();
+    })
+  });
 });
